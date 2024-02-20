@@ -59,6 +59,11 @@ impl Single {
 }
 
 impl Body {
+    /// Returns whether this body is multi-part.
+    pub fn is_multipart(&self) -> bool {
+        !matches!(self.inner, Inner::Bytes(_))
+    }
+
     /// Returns a reference to the internal data of the `Body`.
     ///
     /// `None` is returned, if the underlying data is a multipart form.
