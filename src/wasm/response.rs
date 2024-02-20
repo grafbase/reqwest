@@ -178,6 +178,32 @@ impl Response {
     }
 }
 
+impl<T: Into<crate::Body>> From<http::Response<T>> for Response {
+    fn from(r: http::Response<T>) -> Response {
+        let (parts, body) = r.into_parts();
+        let body = body.into();
+        assert!(!body.is_multipart());
+
+        let mut init = web_sys::ResponseInit::new();
+        init.status(parts.status.as_u16());
+        let mut bytes = body
+            .as_bytes()
+            .expect("always succeeds internally")
+            .to_vec();
+        let web_response =
+            web_sys::Response::new_with_opt_u8_array_and_init(Some(bytes.as_mut_slice()), &init)
+                .expect("must succeed");
+
+        let _abort = AbortGuard::new().expect("must succeed");
+        let url = Url::parse("http://no.url.provided.local").unwrap();
+        Response {
+            http: http::Response::from_parts(parts, web_response),
+            url: Box::new(url),
+            _abort,
+        }
+    }
+}
+
 impl fmt::Debug for Response {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.debug_struct("Response")
