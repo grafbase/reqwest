@@ -135,7 +135,7 @@ tokio-native-tls = { version = "0.3.0", optional = true }
 
 # rustls-tls
 hyper-rustls = { version = "0.26.0", default-features = false, optional = true }
-rustls = { version = "0.22.2", optional = true }
+rustls = { version = "0.23", optional = true }
 rustls-pki-types = { version = "1.1.0", features = ["alloc"] ,optional = true }
 tokio-rustls = { version = "0.25", optional = true }
 webpki-roots = { version = "0.26.0", optional = true }
@@ -275,3 +275,8 @@ required-features = ["deflate", "stream"]
 name = "multipart"
 path = "tests/multipart.rs"
 required-features = ["multipart"]
+
+[patch.crates-io]
+# Drop when https://github.com/rustls/tokio-rustls/pull/44 is merged.
+tokio-rustls = { git = "https://github.com/rustls/tokio-rustls", rev = "b3a2b143239d66253ba09f8ac4bfc4b7ab00cfac" } # jbp-rustls-0.23
+hyper-rustls = { git = "https://github.com/grafbase/hyper-rustls", rev = "e8e14ba34c081702297c74e544109be6c8ea5232" } # rustls-0.23
