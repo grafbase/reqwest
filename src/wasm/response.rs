@@ -182,7 +182,7 @@ impl<T: Into<crate::Body>> From<http::Response<T>> for Response {
     fn from(r: http::Response<T>) -> Response {
         let (parts, body) = r.into_parts();
         let body = body.into();
-        assert!(!body.is_multipart());
+        assert!(body.as_bytes().is_none());
 
         let mut init = web_sys::ResponseInit::new();
         init.status(parts.status.as_u16());
