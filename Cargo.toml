@@ -194,11 +194,13 @@ version = "0.3.25"
 features = [
     "AbortController",
     "AbortSignal",
+    "Blob",
     "Headers",
     "Request",
     "RequestInit",
     "RequestMode",
     "Response",
+    "ResponseInit",
     "Window",
     "FormData",
     "Blob",
